@@ -19,6 +19,10 @@ Zapisuj te informacje w [localStorage](https://frontstack.pl/czym-jest-local-sto
 
 Następnie przy pomocy [API](https://exchangeratesapi.io/) pobieraj aktualne kursy walut użytkownika i przypisuj odpowiednią wartość do każdego elementu w tablicy.
 
+> **Uwaga:** w tym projekcie możesz napotkać ostrzeżenia lub błędy związane z *mixed content*, ponieważ darmowa wersja exchangeratesapi.io oferuje jedynie niezabezpieczone połączenie (HTTP). Mixed content występuje, gdy żądanie nie jest zabezpieczone przez protokół HTTPS (czego wymaga polityka bezpieczeństwa przeglądarek), czyli ładowana jest zawartość HTTP, np. grafiki, skrypty, style itp. Aby umożliwić ładowanie zawartości HTTP, należy [zmienić ustawienia przeglądarki](https://stackoverflow.com/questions/18321032/how-to-get-chrome-to-allow-mixed-content) dla danej strony. Innym wyjściem jest zakupienie płatnej wersji exchangeratesapi.io albo skorzystanie z innego API (jeśli takie znajdziesz, to będę wdzięczny za informację! ;)).
+
+&nbsp;
+
 Wynik działania aplikacji mógłby się sprowadzać do poniższej tabeli:
 
 | Waluta | Ilość | Data zakupu | Cena zakupu | Obecny kurs | Obecna wartość | Zysk/Strata |
