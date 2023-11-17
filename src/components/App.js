@@ -3,7 +3,7 @@ import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 
-import CurrencyApp from './CurrencyMain';
+import CurrencyApp from './CurrencyApp';
 
 import { composeWithDevTools } from 'redux-devtools-extension';
 
