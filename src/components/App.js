@@ -6,18 +6,18 @@ import thunk from 'redux-thunk';
 import CurrencyApp from './CurrencyApp';
 
 import { composeWithDevTools } from 'redux-devtools-extension';
+import reducers from './reducers';
+import '../style/background.scss';
 
-
-
-// const store = createStore(reducers, composeWithDevTools(applyMiddleware(thunk)));
+const store = createStore(reducers, composeWithDevTools(applyMiddleware(thunk)));
 
 const App = () => {
 	return (
-		<>
-			{/* <Provider store={store}> */}
+		<Provider store={store}>
+			<div className='overlay'>
 				<CurrencyApp />
-			{/* </Provider> */}
-		</>
+			</div>
+		</Provider>
 	);
 };
 
