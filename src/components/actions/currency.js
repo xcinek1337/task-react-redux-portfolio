@@ -1,5 +1,6 @@
 export const typesAction = {
 	SET_CURR_CODES: 'setCurrCodesToState',
+	SET_PURCHASE_DATE: 'setPurchaseDateToState',
 };
 export const setCurrencyCodesAction = codes => {
 	return {
@@ -9,3 +10,12 @@ export const setCurrencyCodesAction = codes => {
 		},
 	};
 };
+export const setPurchaseDateAction = date => {
+	return {
+		type: typesAction.SET_PURCHASE_DATE,
+		payload: {
+			date,
+		},
+	};
+};
+

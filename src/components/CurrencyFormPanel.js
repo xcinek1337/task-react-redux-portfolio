@@ -11,12 +11,12 @@ const CurrencyFormPanel = () => {
 	const [selectedCurrency, setSelectedCurrency] = useState('');
 	const [purchaseDate, setPurchaseDate] = useState('');
 	const [oldPrice, setOldPrice] = useState('');
-	const currencyCodes = useSelector(state => state.codes);
+	const currencyCodes = useSelector(state => state.currencyCodes);
 
 	const todaysDate = todaysDay();
 
 	useEffect(() => {
-		fetchData();
+		// fetchData();
 	}, []);
 
 	useEffect(() => {
@@ -29,6 +29,7 @@ const CurrencyFormPanel = () => {
 	const fetchData = async () => {
 		try {
 			const data = todaysDay();
+
 			const currency = await allCurrenciesAPI();
 			dispatch(setCurrencyCodesAction(currency));
 		} catch (error) {
@@ -64,13 +65,13 @@ const CurrencyFormPanel = () => {
 						<option value='' disabled hidden>
 							Currency
 						</option>
-						{currencyCodes && currencyCodes.rates
-							? Object.keys(currencyCodes.rates).map((currencyCode, index) => (
-									<option key={index} value={currencyCode}>
-										{currencyCode}
-									</option>
-							  ))
-							: null}
+						{currencyCodes.map((code, index) => {
+							return (
+								<option key={index} value={code}>
+									{code}
+								</option>
+							);
+						})}
 					</select>
 					<div className='form__input-div'>
 						<label className='form__label' htmlFor=''>

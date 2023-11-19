@@ -44,8 +44,9 @@
 		border-radius: 3px;
 	}
 	&__select {
-        
+		margin-top: 15px;
 		padding: 5px 8px;
+        font-size: 20px;
 		color: white;
 		background-color: transparent;
 		border-radius: 7px;
@@ -58,16 +59,15 @@
 		bottom: 10%;
 		right: 5%;
         
-        padding: 4px 8px;
-        background-color: transparent;
+        padding: 6px 12px;
+        font-size: 16px;
+		background-color: transparent;
         border: 1px solid white;
         border-radius: 7px;
         color: inherit;
+        transition: background-color 0.4s;
 
-        transition: background-colo;
         cursor: pointer;
-
-
         &:hover{
             background-color: grey;
         }

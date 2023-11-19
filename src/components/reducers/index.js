@@ -1,6 +1,7 @@
 import { typesAction } from '../actions/currency';
 const initalState = {
-	codes: [],
+	currencyCodes: [],
+	purchaseDate: '',
 };
 
 const reducers = (state = initalState, action) => {
@@ -8,7 +9,12 @@ const reducers = (state = initalState, action) => {
 		case typesAction.SET_CURR_CODES:
 			return {
 				...state,
-				codes: action.payload.codes,
+				currencyCodes: action.payload.codes,
+			};
+		case typesAction.SET_PURCHASE_DATE:
+			return {
+				...state,
+				purchaseDate: action.payload.date,
 			};
 		default:
 			return state;
