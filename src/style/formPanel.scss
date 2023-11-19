@@ -1,80 +1,81 @@
 .panel {
-	&__wrapper {
-		margin: 0 auto;
-		max-width: 1200px;
-		width: 100%;
-	}
-	&__form {
-		margin: 0 auto;
-		margin-top: 8vh;
-		max-width: 800px;
-		height: 300px;
+  &__wrapper {
+    margin: 0 auto;
+    max-width: 1200px;
+    width: 100%;
+  }
+  &__form {
+    margin: 0 auto;
+    margin-top: 8vh;
+    max-width: 800px;
+    height: 300px;
 
-		border: 5px solid transparent;
-		border-image: linear-gradient(to right, #7a7777, #d3d0d0);
-		border-image-slice: 1;
-		clip-path: inset(0 round 6px);
-	}
+    border: 5px solid transparent;
+    border-image: linear-gradient(to right, #7a7777, #d3d0d0);
+    border-image-slice: 1;
+    clip-path: inset(0 round 6px);
+  }
 }
 
 .form {
-	position: relative;
+  position: relative;
 
-	display: flex;
-	align-items: center;
-	justify-content: space-evenly;
-	color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  color: white;
 
-	&__input-div {
-		display: flex;
-		flex-direction: column;
-	}
-	&__label {
-		text-align: center;
-	}
-	&__input {
-		padding: 4px 4px;
-		margin: 0 auto;
-		width: 80%;
+  &__input-div {
+    display: flex;
+    flex-direction: column;
+  }
+  &__label {
+    text-align: center;
+  }
+  &__input {
+    padding: 4px 4px;
+    margin: 0 auto;
+    width: 80%;
 
-		color: inherit;
-		background-color: transparent;
-		border: 1px solid white;
-		border-radius: 3px;
-	}
-	&__select {
-		margin-top: 15px;
-		padding: 5px 8px;
-		font-size: 20px;
-		color: white;
-		background-color: transparent;
-		border-radius: 7px;
-		option {
-			color: black;
-		}
-	}
-	&__submit {
-		position: absolute;
-		bottom: 10%;
-		right: 5%;
+    color: inherit;
+    background-color: transparent;
+    border: 1px solid white;
+    border-radius: 3px;
+  }
+  &__select {
+    margin-top: 15px;
+    padding: 5px 8px;
+    font-size: 20px;
+    color: white;
+    background-color: transparent;
+    border-radius: 7px;
+    option {
+      color: black;
+    }
+  }
+  &__submit {
+    position: absolute;
+    bottom: 10%;
+    right: 5%;
 
-		padding: 6px 12px;
-		font-size: 16px;
-		background-color: transparent;
-		border: 1px solid white;
-		border-radius: 7px;
-		color: inherit;
-		transition: background-color 0.4s;
+    padding: 6px 12px;
+    font-size: 16px;
+    background-color: transparent;
+    border: 1px solid white;
+    border-radius: 7px;
+    color: inherit;
+    transition: background-color 0.4s;
 
-		cursor: pointer;
-		&:hover {
-			background-color: grey;
-		}
-	}
-	&__input.invalid {
-		outline: 2px solid red;
-	}
-	&__input.accept {
-		outline: 2px solid green;
-	}
+    cursor: pointer;
+    &:hover {
+      background-color: grey;
+    }
+  }
+  &__focused {
+    outline: 2px solid red;
+  }
+
+  &__valid {
+    outline: 2px solid green;
+  }
 }
