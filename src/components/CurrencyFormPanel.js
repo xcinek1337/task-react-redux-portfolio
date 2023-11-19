@@ -1,30 +1,35 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
+import FormSelect from './FormSelect';
+
 import { allCurrenciesAPI } from '../providers/currencyAPI';
-import { setCurrencyCodesAction } from './actions/currency';
+import { setCurrencyCodesAction, setPurchaseDateAction } from './actions/currency';
 import '../style/formPanel.scss';
 import todaysDay from '../utilities/todaysDay';
 
+const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
 const CurrencyFormPanel = () => {
 	const dispatch = useDispatch();
-	const [selectedCurrency, setSelectedCurrency] = useState('');
+	
 	const [purchaseDate, setPurchaseDate] = useState('');
 	const [oldPrice, setOldPrice] = useState('');
+	const [isInputFocused, setIsInputFocused] = useState(false);
 	const currencyCodes = useSelector(state => state.currencyCodes);
 
+	const [isInuputOkey, setIsInputOkey] = useState(false);
 	const todaysDate = todaysDay();
 
 	useEffect(() => {
-		// fetchData();
+		fetchData();
 	}, []);
-
 	useEffect(() => {
-		const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
 		if (dateRegex.test(purchaseDate) && purchaseDate < todaysDate) {
-			console.log(`hi`);
+			setIsInputOkey(1);
+		} else {
+			setIsInputOkey(false);
 		}
-	}, [selectedCurrency, purchaseDate]);
+	}, [purchaseDate]);
 
 	const fetchData = async () => {
 		try {
@@ -57,32 +62,36 @@ const CurrencyFormPanel = () => {
 		e.preventDefault();
 		// fetchActuallyPrice(selectedCurrency);
 	};
+
+	const isValidDate = () => {
+		return dateRegex.test(purchaseDate) && purchaseDate < todaysDate;
+	};
+	const handleFocus = () => {
+		setIsInputFocused(true);
+	};
+
+	const handleBlur = () => {
+		setIsInputFocused(false);
+	};
 	return (
 		<div className='panel'>
 			<div className='panel__wrapper'>
 				<form onSubmit={handleSubmit} className='panel__form form' action=''>
-					<select className='form__select' value={selectedCurrency} onChange={e => setSelectedCurrency(e.target.value)}>
-						<option value='' disabled hidden>
-							Currency
-						</option>
-						{currencyCodes.map((code, index) => {
-							return (
-								<option key={index} value={code}>
-									{code}
-								</option>
-							);
-						})}
-					</select>
+					<FormSelect />
 					<div className='form__input-div'>
 						<label className='form__label' htmlFor=''>
 							Purchase Date:
 						</label>
 						<input
-							className='form__input'
+							className={`form__input ${isInputFocused && !isValidDate() ? 'invalid' : ''} ${
+								isInuputOkey ? 'accept' : ''
+							}`}
 							placeholder='YYYY-MM-DD'
 							type='text'
 							value={purchaseDate}
-							onChange={hadleChangePurchaseDate}
+							onFocus={handleFocus}
+							onBlur={handleBlur}
+							onChange={e => setPurchaseDate(e.target.value)}
 						/>
 					</div>
 					<div className='form__input-div'>
@@ -102,11 +111,5 @@ const CurrencyFormPanel = () => {
 			</div>
 		</div>
 	);
-	function hadleChangePurchaseDate(e) {
-		console.log(todaysDay());
-		const value = e.target.value;
-		setPurchaseDate(value);
-		const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
-	}
 };
 export default CurrencyFormPanel;
