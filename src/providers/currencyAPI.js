@@ -36,6 +36,7 @@ export const providePriceAPI = async (data, symbol) => {
 		}
 		const result = await response.json();
 		const totalPrice = result.rates.PLN;
+    	return totalPrice;
 	} catch (e) {
 		// throwing error e to fetching function
 		throw new Error(e);

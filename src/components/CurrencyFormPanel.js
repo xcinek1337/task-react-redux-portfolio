@@ -4,11 +4,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import FormSelect from './FormSelect';
 import FormInput from './FormInput';
 
-import { allCurrenciesAPI } from '../providers/currencyAPI';
+
+import { allCurrenciesAPI, providePriceAPI } from '../providers/currencyAPI';
 import {
   setCurrencyCodesAction,
   setPurchaseDateAction,
   setAmountAction,
+  setOldPriceAction,
+  setTodaysPriceAction,
 } from './actions/currency';
 
 import '../style/formPanel.scss';
@@ -18,49 +21,33 @@ const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
 const CurrencyFormPanel = () => {
   const [isDatePurchaseValid, setIsDatePurchaseValid] = useState(false);
   const [isAmountValid, setIsAmountValid] = useState(false);
+  const [isOldPriceIsValid, setIsOldPriceIsValid] = useState(false);
+
   const dispatch = useDispatch();
 
-  const [purchaseDate, setPurchaseDate] = useState('');
-  const [oldPrice, setOldPrice] = useState('');
-  const [isInputFocused, setIsInputFocused] = useState(false);
-  const currencyCodes = useSelector((state) => state.currencyCodes);
+  const selectedCode = useSelector((state) => state.selectedCode);
+  const purchaseDate = useSelector((state) => state.purchaseDate);
+  const oldPrice = useSelector((state) => state.oldPrice);
 
   const todaysDate = todaysDay();
 
+  //   downloading currency codes to select
   useEffect(() => {
-    // fetchData();
+    getCurrencyCodesAPI();
   }, []);
 
-  const fetchData = async () => {
-    try {
-      const data = todaysDay();
-
-      const currency = await allCurrenciesAPI();
-      dispatch(setCurrencyCodesAction(currency));
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    } finally {
-      console.log(`finally`);
+  // listening for data to download price in purchase day and todays price
+  useEffect(() => {
+    if (purchaseDate && selectedCode) {
+      getRates();
     }
-  };
-
-  const fetchDataAndLog = async (selectedCurrency) => {
-    try {
-      const result = await providePriceAPI(purchaseDate, selectedCurrency);
-      if (result > 1) {
-        setOldPrice(result.toFixed(2));
-      } else {
-        setOldPrice(result);
-      }
-      setOldPrice(result);
-    } catch (error) {
-      console.error('error', error);
-    }
-  };
+  }, [selectedCode, purchaseDate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // fetchActuallyPrice(selectedCurrency);
+    if (isDatePurchaseValid && isAmountValid && isOldPriceIsValid) {
+      console.log(`hi`);
+    }
   };
 
   const handleChangePurchaseDate = (value) => {
@@ -73,13 +60,21 @@ const CurrencyFormPanel = () => {
   };
 
   const handleChangeAmount = (value) => {
-    if (value > 0) {
+    if (Number(value) > 0) {
       setIsAmountValid(true);
       dispatch(setAmountAction(value));
     } else {
       setIsAmountValid(false);
     }
   };
+  const handleChangeOldPrice = (price) => {
+    if (Number(price) > 0) {
+      setIsOldPriceIsValid(true);
+    } else {
+      setIsOldPriceIsValid(false);
+    }
+  };
+
   return (
     <div className="panel">
       <div className="panel__wrapper">
@@ -94,9 +89,17 @@ const CurrencyFormPanel = () => {
           />
           <FormInput
             onChange={handleChangeAmount}
-            type={'number'}
+            type={'text'}
             label={'Amount of Currency:'}
             isValid={isAmountValid}
+          />
+          <FormInput
+            onChange={handleChangeOldPrice}
+            type={'text'}
+            label={'Exchange Rate on Purchase Day:'}
+            isValid={isOldPriceIsValid}
+            placeHolder={'automatic filling'}
+            price={oldPrice ? oldPrice : null}
           />
 
           <input className="form__submit" type="submit" value={'check'} />
@@ -104,36 +107,41 @@ const CurrencyFormPanel = () => {
       </div>
     </div>
   );
+  //   fetching funcs on the bottom for better clear view code
+  async function getCurrencyCodesAPI() {
+    try {
+      const currency = await allCurrenciesAPI();
+      dispatch(setCurrencyCodesAction(currency));
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  }
+
+  async function getOldPriceAPI(purchaseDate, selectedCurrency) {
+    try {
+      const result = await providePriceAPI(purchaseDate, selectedCurrency);
+      return result;
+    } catch (error) {
+      console.error('cannot provide old price rate', error);
+    }
+  }
+  async function getRates() {
+    const oldPrice = await getOldPriceAPI(purchaseDate, selectedCode);
+    if (oldPrice) {
+      if (oldPrice > 1) {
+        dispatch(setOldPriceAction(oldPrice.toFixed(2)));
+      } else {
+        dispatch(setOldPriceAction(oldPrice.toFixed(3)));
+      }
+    }
+    const todaysPrice = await getOldPriceAPI(todaysDate, selectedCode);
+    if (todaysPrice) {
+      if (todaysPrice > 1) {
+        dispatch(setTodaysPriceAction(todaysPrice.toFixed(2)));
+      } else {
+        dispatch(setTodaysPriceAction(todaysPrice.toFixed(3)));
+      }
+    }
+  }
 };
 export default CurrencyFormPanel;
-
-// const xd ={
-// 	<div className='form__input-div'>
-// 						<label className='form__label' htmlFor=''>
-// 							Purchase Date:
-// 						</label>
-// 						<input
-// 							className={`form__input ${isInputFocused && !isValidDate() ? 'invalid' : ''} ${
-// 								isInuputOkey ? 'accept' : ''
-// 							}`}
-// 							placeholder='YYYY-MM-DD'
-// 							type='text'
-// 							value={purchaseDate}
-// 							onFocus={handleFocus}
-// 							onBlur={handleBlur}
-// 							onChange={e => setPurchaseDate(e.target.value)}
-// 						/>
-// 					</div>
-// 					<div className='form__input-div'>
-// 						<label className='form__label' htmlFor=''>
-// 							Amount of Currency:
-// 						</label>
-// 						<input className='form__input' type='number' />
-// 					</div>
-// 					<div className='form__input-div'>
-// 						<label className='form__label' htmlFor=''>
-// 							Exchange Rate on Purchase Day:
-// 						</label>
-// 						<input className='form__input' placeholder='automatic filling' type='number' />
-// 					</div>
-// }

@@ -1,8 +1,10 @@
 export const typesAction = {
-  SET_CURR_CODES: "setCurrCodesToState",
-  SET_SELECTED_CURR_CODE: "setSelectedCurrCodeToState",
-  SET_PURCHASE_DATE: "setPurchaseDateToState",
-  SET_AMOUNT: "setAmountToState",
+  SET_CURR_CODES: 'setCurrCodesToState',
+  SET_SELECTED_CURR_CODE: 'setSelectedCurrCodeToState',
+  SET_PURCHASE_DATE: 'setPurchaseDateToState',
+  SET_AMOUNT: 'setAmountToState',
+  SET_OLD_PRICE: 'setOldPriceToState',
+  SET_TODAYS_PRICE: 'setTodaysPriceToState',
 };
 
 export const setCurrencyCodesAction = (codes) => {
@@ -35,6 +37,24 @@ export const setAmountAction = (amount) => {
     type: typesAction.SET_AMOUNT,
     payload: {
       amount,
+    },
+  };
+};
+
+export const setOldPriceAction = (price) => {
+  return {
+    type: typesAction.SET_OLD_PRICE,
+    payload: {
+      price,
+    },
+  };
+};
+
+export const setTodaysPriceAction = (price) => {
+  return {
+    type: typesAction.SET_TODAYS_PRICE,
+    payload: {
+      price,
     },
   };
 };

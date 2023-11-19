@@ -4,6 +4,8 @@ const initalState = {
   selectedCode: '',
   purchaseDate: '',
   amount: '',
+  oldPrice: '',
+  todaysPrice: '',
 };
 
 const reducers = (state = initalState, action) => {
@@ -27,6 +29,16 @@ const reducers = (state = initalState, action) => {
       return {
         ...state,
         amount: action.payload.amount,
+      };
+    case typesAction.SET_OLD_PRICE:
+      return {
+        ...state,
+        oldPrice: action.payload.price,
+      };
+    case typesAction.SET_TODAYS_PRICE:
+      return {
+        ...state,
+        todaysPrice: action.payload.price,
       };
     default:
       return state;
