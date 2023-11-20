@@ -17,13 +17,24 @@ const FormSelect = () => {
 	};
 
 	return (
-		<select className='form__select' value={selectValue} onChange={handleSelect}>
-			<option value='' disabled hidden>
+		<select
+			className='form__select'
+			value={selectValue}
+			onChange={handleSelect}
+		>
+			<option
+				value=''
+				disabled
+				hidden
+			>
 				Currency
 			</option>
 			{currencyCodes.map((code, index) => {
 				return (
-					<option key={index} value={code}>
+					<option
+						key={index}
+						value={code}
+					>
 						{code}
 					</option>
 				);
