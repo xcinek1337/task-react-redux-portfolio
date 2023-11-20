@@ -24,7 +24,14 @@
   align-items: center;
   justify-content: space-evenly;
   color: white;
+  &__error{
+    position: absolute;
+    top: 10%;
 
+    font-size: 18px;
+    text-align: center;
+    color: tomato;
+  }
   &__input-div {
     display: flex;
     flex-direction: column;

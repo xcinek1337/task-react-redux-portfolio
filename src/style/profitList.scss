@@ -1,0 +1,20 @@
+.profit__wrapper {
+  margin: 0 auto;
+  max-width: 1400px;
+  width: 100%;
+}
+.table {
+  color: wheat;
+  margin-top: 100px;
+  border: 1px solid white; /* Dodajemy białe obramowanie */
+  border-collapse: collapse; /* Opcjonalne - łączymy obramowanie komórek */
+  width: 100%; /* Opcjonalne - szerokość tabeli na 100% */
+  /* Dodatkowe stylizacje, jak kolor tła, kolory czcionek itp. */
+}
+.table th,
+.table td {
+  border: 1px solid white; /* Dodajemy białe obramowanie dla komórek */
+  padding: 8px; /* Opcjonalne - dodajemy wypełnienie komórek */
+  text-align: left; /* Opcjonalne - ustawiamy tekst w komórkach na lewo */
+  /* Dodatkowe stylizacje dla komórek */
+}

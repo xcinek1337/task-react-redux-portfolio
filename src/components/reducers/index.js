@@ -6,6 +6,7 @@ const initalState = {
   amount: '',
   oldPrice: '',
   todaysPrice: '',
+  isSubmitValid: '',
 };
 
 const reducers = (state = initalState, action) => {
@@ -39,6 +40,11 @@ const reducers = (state = initalState, action) => {
       return {
         ...state,
         todaysPrice: action.payload.price,
+      };
+    case typesAction.SET_SUBMIT_OK:
+      return {
+        ...state,
+        isSubmitValid: action.payload.response,
       };
     default:
       return state;

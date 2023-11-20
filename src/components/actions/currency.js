@@ -5,6 +5,7 @@ export const typesAction = {
   SET_AMOUNT: 'setAmountToState',
   SET_OLD_PRICE: 'setOldPriceToState',
   SET_TODAYS_PRICE: 'setTodaysPriceToState',
+  SET_SUBMIT_OK: 'setSubmitOkToState',
 };
 
 export const setCurrencyCodesAction = (codes) => {
@@ -55,6 +56,15 @@ export const setTodaysPriceAction = (price) => {
     type: typesAction.SET_TODAYS_PRICE,
     payload: {
       price,
+    },
+  };
+};
+
+export const setSubmitOkAction = (response) => {
+  return {
+    type: typesAction.SET_SUBMIT_OK,
+    payload: {
+      response,
     },
   };
 };

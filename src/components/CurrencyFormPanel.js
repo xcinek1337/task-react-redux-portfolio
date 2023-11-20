@@ -12,18 +12,19 @@ import {
   setAmountAction,
   setOldPriceAction,
   setTodaysPriceAction,
+  setSubmitOkAction,
 } from './actions/currency';
 
 import '../style/formPanel.scss';
 import todaysDay from '../utilities/todaysDay';
 
-const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
 const CurrencyFormPanel = () => {
+  const dispatch = useDispatch();
+
+  const [error, setError] = useState(false);
   const [isDatePurchaseValid, setIsDatePurchaseValid] = useState(false);
   const [isAmountValid, setIsAmountValid] = useState(false);
   const [isOldPriceIsValid, setIsOldPriceIsValid] = useState(false);
-
-  const dispatch = useDispatch();
 
   const selectedCode = useSelector((state) => state.selectedCode);
   const purchaseDate = useSelector((state) => state.purchaseDate);
@@ -43,14 +44,8 @@ const CurrencyFormPanel = () => {
     }
   }, [selectedCode, purchaseDate]);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (isDatePurchaseValid && isAmountValid && isOldPriceIsValid) {
-      console.log(`hi`);
-    }
-  };
-
   const handleChangePurchaseDate = (value) => {
+    const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
     if (dateRegex.test(value) && value < todaysDate) {
       setIsDatePurchaseValid(true);
       dispatch(setPurchaseDateAction(value));
@@ -67,6 +62,9 @@ const CurrencyFormPanel = () => {
       setIsAmountValid(false);
     }
   };
+
+  //   problem jest taki ze to nie dziala, tzn predzej pobierze kurs samodzielnie, a nawet jesli uzytkownik wpisze kurs, to i tak go podmieni, i onChane nie zadziala...
+  //   czyli uzywanie inputa i wstawianie mu value przez props to jest niezbyt dobry pomysl... jesli chcemy dac dowolnosc uztykownikowi, na wpisanie tez swojego kursu kupna..
   const handleChangeOldPrice = (price) => {
     if (Number(price) > 0) {
       setIsOldPriceIsValid(true);
@@ -75,10 +73,25 @@ const CurrencyFormPanel = () => {
     }
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // nie wiem jaka lepsza validacje mozna tu wprowadzic...
+    if (isDatePurchaseValid && isAmountValid && oldPrice && selectedCode) {
+      dispatch(setSubmitOkAction(true));
+      setError(false);
+    } else {
+      setError(true);
+    }
+  };
   return (
     <div className="panel">
       <div className="panel__wrapper">
         <form onSubmit={handleSubmit} className="panel__form form" action="">
+          {error && (
+            <p className="form__error">
+              make sure to fill every field, to get better calculations
+            </p>
+          )}
           <FormSelect />
           <FormInput
             onChange={handleChangePurchaseDate}
@@ -117,7 +130,7 @@ const CurrencyFormPanel = () => {
     }
   }
 
-  async function getOldPriceAPI(purchaseDate, selectedCurrency) {
+  async function getPriceApi(purchaseDate, selectedCurrency) {
     try {
       const result = await providePriceAPI(purchaseDate, selectedCurrency);
       return result;
@@ -126,7 +139,7 @@ const CurrencyFormPanel = () => {
     }
   }
   async function getRates() {
-    const oldPrice = await getOldPriceAPI(purchaseDate, selectedCode);
+    const oldPrice = await getPriceApi(purchaseDate, selectedCode);
     if (oldPrice) {
       if (oldPrice > 1) {
         dispatch(setOldPriceAction(oldPrice.toFixed(2)));
@@ -134,7 +147,7 @@ const CurrencyFormPanel = () => {
         dispatch(setOldPriceAction(oldPrice.toFixed(3)));
       }
     }
-    const todaysPrice = await getOldPriceAPI(todaysDate, selectedCode);
+    const todaysPrice = await getPriceApi(todaysDate, selectedCode);
     if (todaysPrice) {
       if (todaysPrice > 1) {
         dispatch(setTodaysPriceAction(todaysPrice.toFixed(2)));
