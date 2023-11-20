@@ -14,6 +14,7 @@ import {
 	setOldPriceAction,
 	setTodaysPriceAction,
 	setSubmitOkAction,
+	setSelectedCurrencyCodeAction,
 } from './actions/currency';
 
 import '../style/formPanel.scss';
@@ -27,6 +28,7 @@ const CurrencyFormPanel = () => {
 	const [isAmountValid, setIsAmountValid] = useState(false);
 	const [isOldPriceIsValid, setIsOldPriceIsValid] = useState(false);
 
+	const currencyCodes = useSelector((state) => state.currencyCodes);
 	const selectedCode = useSelector((state) => state.selectedCode);
 	const purchaseDate = useSelector((state) => state.purchaseDate);
 	const oldPrice = useSelector((state) => state.oldPrice);
@@ -72,7 +74,10 @@ const CurrencyFormPanel = () => {
 					action=''
 				>
 					{error && <p className='form__error'>make sure to fill every field correct, to get better calculations</p>}
-					<FormSelect />
+					<FormSelect
+						action={setSelectedCurrencyCodeAction}
+						options={currencyCodes}
+					/>
 					<FormInput
 						action={setPurchaseDateAction}
 						type={'text'}
