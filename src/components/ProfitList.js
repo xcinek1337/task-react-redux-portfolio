@@ -8,19 +8,44 @@ import '../style/profitList.scss';
 
 
 const ProfitList = () => {
-	const { selectedCode, purchaseDate, amount, oldPrice, todaysPrice, isSubmitValid } = useSelector((state) => state);
+	const investmentInfo = useSelector((state) => state.investmentInfo);
+	const { isSubmitValid } = investmentInfo;
 
-	const renderInvest = () => (
-		<>
-			<td>{selectedCode}</td>
-			<td>{purchaseDate}</td>
-			<td>{amount}</td>
-			<td>{oldPrice}</td>
-			<td>{todaysPrice}</td>
-			<td>{(amount * todaysPrice).toFixed(2)}</td>
-			<td>{(((amount * todaysPrice - amount * oldPrice) / (amount * oldPrice)) * 100).toFixed(2)}%</td>
-		</>
-	);
+	const storedInvestments = JSON.parse(localStorage.getItem('investments')) || [];
+	useEffect(() => {
+		if (isSubmitValid) {
+			const newInvestments = [...storedInvestments, investmentInfo];
+			localStorage.setItem('investments', JSON.stringify(newInvestments));
+		}
+	}, [isSubmitValid]);
+
+	// const renderInvest = () => (
+	// 	<>
+	// 		<td>{selectedCode}</td>
+	// 		<td>{purchaseDate}</td>
+	// 		<td>{amount}</td>
+	// 		<td>{oldPrice}</td>
+	// 		<td>{todaysPrice}</td>
+	// 		<td>{(amount * todaysPrice).toFixed(2)}</td>
+	// 		<td>{(((amount * todaysPrice - amount * oldPrice) / (amount * oldPrice)) * 100).toFixed(2)}%</td>
+	// 	</>
+	// );
+	const renderInvest = () => {
+		return storedInvestments.map((invest, index) => {
+			const { selectedCode, purchaseDate, amount, oldPrice, todaysPrice } = invest;
+			return (
+				<tr key={index}>
+					<td>{selectedCode}</td>
+					<td>{purchaseDate}</td>
+					<td>{amount}</td>
+					<td>{oldPrice}</td>
+					<td>{todaysPrice}</td>
+					<td>{(amount * todaysPrice).toFixed(2)}</td>
+					<td>{(((amount * todaysPrice - amount * oldPrice) / (amount * oldPrice)) * 100).toFixed(2)}%</td>
+				</tr>
+			);
+		});
+	};
 
 	return (
 		<div className='profit__wrapper'>
@@ -36,11 +61,7 @@ const ProfitList = () => {
 						<th>Profit/Loss:</th>
 					</tr>
 				</thead>
-				{isSubmitValid && (
-					<tbody>
-						<tr>{renderInvest()}</tr>
-					</tbody>
-				)}
+				<tbody>{renderInvest()}</tbody>
 			</table>
 		</div>
 	);

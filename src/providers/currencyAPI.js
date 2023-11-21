@@ -1,24 +1,24 @@
 import todaysDay from '../utilities/todaysDay';
 
-export const allCurrenciesAPI = async (data = '2022-02-20') => {
-  try {
-    const response = await fetch(
-      `https://api.apilayer.com/fixer/${data}?symbols=&base=EUR&apikey=B8HfEJcZl5MRlqkzQZ3Vl6v6v039c87h`
-    );
+export const allCurrenciesAPI = async (data = '2023-11-20') => {
+	try {
+		const response = await fetch(
+			`https://api.apilayer.com/fixer/${data}?symbols=&base=EUR&apikey=B8HfEJcZl5MRlqkzQZ3Vl6v6v039c87h`
+		);
 
-    if (!response.ok) {
-      // here i create custom error, which i send it to catch block
-      throw new Error('Błąd odpowiedzi!');
-    }
-    const result = await response.json();
-    const currencyCodes = Object.keys(result.rates).map((currencyCode) => {
-      return currencyCode;
-    });
-    return currencyCodes;
-  } catch (e) {
-    // throwing error e to fetching function
-    throw new Error(e);
-  }
+		if (!response.ok) {
+			// here i create custom error, which i send it to catch block
+			throw new Error('Błąd odpowiedzi!');
+		}
+		const result = await response.json();
+		const currencyCodes = Object.keys(result.rates).map((currencyCode) => {
+			return currencyCode;
+		});
+		return currencyCodes;
+	} catch (e) {
+		// throwing error e to fetching function
+		throw new Error(e);
+	}
 };
 
 export const providePriceAPI = async (data, symbol) => {
@@ -40,5 +40,5 @@ export const providePriceAPI = async (data, symbol) => {
 	} catch (e) {
 		// throwing error e to fetching function
 		throw new Error(e);
-	}
+	} 
 };

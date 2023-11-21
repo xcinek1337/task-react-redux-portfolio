@@ -28,11 +28,8 @@ const CurrencyFormPanel = () => {
 	const [isAmountValid, setIsAmountValid] = useState(false);
 	const [isOldPriceIsValid, setIsOldPriceIsValid] = useState(false);
 
-	const currencyCodes = useSelector((state) => state.currencyCodes);
-	const selectedCode = useSelector((state) => state.selectedCode);
-	const purchaseDate = useSelector((state) => state.purchaseDate);
-	const oldPrice = useSelector((state) => state.oldPrice);
-	const amount = useSelector((state) => state.amount);
+	const investmentInfo = useSelector((state) => state.investmentInfo);
+	const { currencyCodes, selectedCode, purchaseDate, amount, oldPrice, todaysPrice } = investmentInfo;
 
 	const todaysDate = todaysDay();
 
@@ -56,10 +53,9 @@ const CurrencyFormPanel = () => {
 	const handleSubmit = (e) => {
 		e.preventDefault();
 
-		if (isDatePurchaseValid && isAmountValid && isOldPriceIsValid && selectedCode) {
+		if (isDatePurchaseValid && isAmountValid && isOldPriceIsValid && selectedCode && todaysPrice) {
 			dispatch(setSubmitOkAction(true));
-			setError(false);
-			//clear data in redux
+			// resetFromAfterSubmit()
 		} else {
 			setError(true);
 		}
@@ -116,6 +112,8 @@ const CurrencyFormPanel = () => {
 			dispatch(setCurrencyCodesAction(currency));
 		} catch (error) {
 			console.error('Error fetching data:', error);
+		} finally {
+			console.log('xd');
 		}
 	}
 
@@ -126,6 +124,8 @@ const CurrencyFormPanel = () => {
 			9876;
 		} catch (error) {
 			console.error('cannot provide old price rate', error);
+		} finally {
+			console.log(`new price swiezutki`);
 		}
 	}
 	async function getRates() {
@@ -145,6 +145,15 @@ const CurrencyFormPanel = () => {
 				dispatch(setTodaysPriceAction(todaysPrice.toFixed(3)));
 			}
 		}
+	}
+	function resetFromAfterSubmit() {
+		// to mozna zastapic ACTIONEM ktory bedzie czyscil stan w reduxie, a tu bedzie uztyywy tylko 1 dispatch zamiast kazdego
+		dispatch(setSubmitOkAction(false));
+		
+		setIsDatePurchaseValid(false);
+		setIsAmountValid(false);
+		setIsOldPriceIsValid(false);
+		setError(false);
 	}
 };
 export default CurrencyFormPanel;
