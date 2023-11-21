@@ -13,10 +13,10 @@ import {
 	setAmountAction,
 	setOldPriceAction,
 	setTodaysPriceAction,
-	setSubmitOkAction,
 	setSelectedCurrencyCodeAction,
 	resetInvestmentInfoAction,
 	setInvestListAction,
+	getLocalStorageDataAction,
 } from './actions/currency';
 
 import '../style/formPanel.scss';
@@ -39,9 +39,8 @@ const CurrencyFormPanel = () => {
 	//   downloading currency codes to select
 	useEffect(() => {
 		getCurrencyCodesAPI();
-
-		const storedInvestments = JSON.parse(localStorage.getItem('investmentsList'));
-		storedInvestments ? dispatch(setInvestListAction(storedInvestments)) : null;
+		const localStorageData = JSON.parse(localStorage.getItem('investmentsList')) || []
+		dispatch(getLocalStorageDataAction(localStorageData));
 	}, []);
 
 	useEffect(() => {
@@ -58,6 +57,21 @@ const CurrencyFormPanel = () => {
 	const handleSubmit = (e) => {
 		e.preventDefault();
 
+		const objData = {
+			selectedCode: selectedCode,
+			purchaseDate: purchaseDate,
+			amount: amount,
+			oldPrice: oldPrice,
+			todaysPrice: todaysPrice,
+		}
+
+		const errors = validate(rules,objData);
+		if(Object.keys(errors).length > 0) {
+			// bledy wystepuja
+ 		} else {
+			// nie wystepuja
+		}
+
 		if (isDatePurchaseValid && isAmountValid && isOldPriceIsValid && selectedCode && todaysPrice) {
 			const obj = {
 				selectedCode: selectedCode,
@@ -69,15 +83,26 @@ const CurrencyFormPanel = () => {
 
 			dispatch((dispatch, getState) => {
 				dispatch(setInvestListAction(obj));
-				const aktualnyStan = getState().investments;
-				const jsonStan = JSON.stringify(aktualnyStan);
-				localStorage.setItem('investmentsList', jsonStan);
+				const investments = getState().investments;
+			
+
+				localStorage.setItem('investmentsList', JSON.stringify(investments));
 			});
+
+
 		} else {
 			setError(true);
 		}
 	};
-
+	function resetFromAfterSubmit() {
+		dispatch(resetInvestmentInfoAction());
+	
+		setIsDatePurchaseValid(false);
+		setIsAmountValid(false);
+		setIsOldPriceIsValid(false);
+		setError(false);
+	}
+	
 	const onChangePurchaseDate = (value) => {
 		dispatch(setPurchaseDateAction(value));
 	};
@@ -170,14 +195,6 @@ const CurrencyFormPanel = () => {
 				dispatch(setTodaysPriceAction(todaysPrice.toFixed(3)));
 			}
 		}
-	}
-	function resetFromAfterSubmit() {
-		dispatch(resetInvestmentInfoAction());
-
-		setIsDatePurchaseValid(false);
-		setIsAmountValid(false);
-		setIsOldPriceIsValid(false);
-		setError(false);
 	}
 };
 export default CurrencyFormPanel;

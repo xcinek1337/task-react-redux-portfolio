@@ -8,6 +8,7 @@ export const typesAction = {
 	// SET_SUBMIT_OK: 'setSubmitOkToState',
 	RESET_INV_INFO: 'resetInvInfoInState',
 	SET_INVEST_OBJ: 'setInvestObjToState',
+	GET_LSTORAGE: 'getLocalStorageToState',
 };
 
 export const setCurrencyCodesAction = (codes) => {
@@ -83,6 +84,14 @@ export const setInvestListAction = (obj) => {
 		type: typesAction.SET_INVEST_OBJ,
 		payload: {
 			obj,
+		},
+	};
+};
+export const getLocalStorageDataAction = (array) => {
+	return {
+		type: typesAction.GET_LSTORAGE,
+		payload: {
+			array,
 		},
 	};
 };

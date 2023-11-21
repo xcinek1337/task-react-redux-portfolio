@@ -1,33 +1,33 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
+
 import '../style/profitList.scss';
 
 const ProfitList = () => {
 	const investmentsList = useSelector((state) => state.investments);
 
 	const renderInvest = () => {
-		return investmentsList.length > 0 ? (
-			investmentsList.map((invest, index) => {
-				const { selectedCode, purchaseDate, amount, oldPrice, todaysPrice } = invest;
-				const profit = (((amount * todaysPrice - amount * oldPrice) / (amount * oldPrice)) * 100).toFixed(2);
+		return investmentsList && investmentsList.length > 0
+			? investmentsList.map((invest, index) => {
+					if (invest) {
+						const { selectedCode, purchaseDate, amount, oldPrice, todaysPrice } = invest;
+						const profit = (((amount * todaysPrice - amount * oldPrice) / (amount * oldPrice)) * 100).toFixed(2);
 
-				return (
-					<tr key={index}>
-						<td>{selectedCode}</td>
-						<td>{purchaseDate}</td>
-						<td>{amount}</td>
-						<td>{oldPrice}</td>
-						<td>{todaysPrice}</td>
-						<td>{(amount * todaysPrice).toFixed(2)}</td>
-						<td className={profit > 0 ? 'table__profit-td' : 'table__lose-td'}>{profit}%</td>
-					</tr>
-				);
-			})
-		) : (
-			<tr>
-				<td colSpan='7'>No investments available.</td>
-			</tr>
-		);
+						return (
+							<tr key={index}>
+								<td>{selectedCode}</td>
+								<td>{purchaseDate}</td>
+								<td>{amount}</td>
+								<td>{oldPrice}</td>
+								<td>{todaysPrice}</td>
+								<td>{(amount * todaysPrice).toFixed(2)}</td>
+								<td className={profit > 0 ? 'table__profit-td' : 'table__lose-td'}>{profit}%</td>
+							</tr>
+						);
+					}
+					return null;
+			  })
+			: null;
 	};
 
 	return (
@@ -44,7 +44,7 @@ const ProfitList = () => {
 						<th>Profit/Loss:</th>
 					</tr>
 				</thead>
-				<tbody>{renderInvest()}</tbody>
+				{investmentsList.length >= 1 && <tbody>{renderInvest()}</tbody>}
 			</table>
 		</div>
 	);

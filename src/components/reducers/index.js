@@ -90,6 +90,11 @@ const reducers = (state = initialState, action) => {
 				...state,
 				investments: [...state.investments, action.payload.obj],
 			};
+		case typesAction.GET_LSTORAGE:
+			return {
+				...state,
+				investments: action.payload.array,
+			};
 		default:
 			return state;
 	}
