@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import FormSelect from './FormSelect';
 import FormInput from './FormInput';
 
-import { validateAmount, validatePurchaseDate, validateOldPrice } from '../utilities/validateInputs';
+import { validate, rules } from '../utilities/validateInputs';
 
 import { allCurrenciesAPI, providePriceAPI } from '../providers/currencyAPI';
 import {
@@ -15,7 +15,7 @@ import {
 	setTodaysPriceAction,
 	setSelectedCurrencyCodeAction,
 	resetInvestmentInfoAction,
-	setInvestListAction,
+	addInvestmentAction,
 	getLocalStorageDataAction,
 } from './actions/currency';
 
@@ -24,22 +24,17 @@ import todaysDay from '../utilities/todaysDay';
 
 const CurrencyFormPanel = () => {
 	const dispatch = useDispatch();
+	const todaysDate = todaysDay();
 
-	const [error, setError] = useState(false);
-	const [isDatePurchaseValid, setIsDatePurchaseValid] = useState(false);
-	const [isAmountValid, setIsAmountValid] = useState(false);
-	const [isOldPriceIsValid, setIsOldPriceIsValid] = useState(false);
+	const [errors, setErrors] = useState(false);
 
-	const investmentsList = useSelector((state) => state.investments);
 	const investmentInfo = useSelector((state) => state.investmentInfo);
 	const { currencyCodes, selectedCode, purchaseDate, amount, oldPrice, todaysPrice } = investmentInfo;
 
-	const todaysDate = todaysDay();
-
-	//   downloading currency codes to select
+	//   downloading currency codes to select or getting data about invest from ls
 	useEffect(() => {
 		getCurrencyCodesAPI();
-		const localStorageData = JSON.parse(localStorage.getItem('investmentsList')) || []
+		const localStorageData = JSON.parse(localStorage.getItem('investmentsList')) || [];
 		dispatch(getLocalStorageDataAction(localStorageData));
 	}, []);
 
@@ -48,10 +43,6 @@ const CurrencyFormPanel = () => {
 		if (purchaseDate && selectedCode && oldPrice === '') {
 			getRates();
 		}
-		//setting green border to inputs for correct validation
-		setIsDatePurchaseValid(validatePurchaseDate(purchaseDate, todaysDate));
-		setIsOldPriceIsValid(validateOldPrice(oldPrice));
-		setIsAmountValid(validateAmount(amount));
 	}, [selectedCode, purchaseDate, oldPrice, amount]);
 
 	const handleSubmit = (e) => {
@@ -63,46 +54,23 @@ const CurrencyFormPanel = () => {
 			amount: amount,
 			oldPrice: oldPrice,
 			todaysPrice: todaysPrice,
-		}
+		};
 
-		const errors = validate(rules,objData);
-		if(Object.keys(errors).length > 0) {
-			// bledy wystepuja
- 		} else {
-			// nie wystepuja
-		}
-
-		if (isDatePurchaseValid && isAmountValid && isOldPriceIsValid && selectedCode && todaysPrice) {
-			const obj = {
-				selectedCode: selectedCode,
-				purchaseDate: purchaseDate,
-				amount: amount,
-				oldPrice: oldPrice,
-				todaysPrice: todaysPrice,
-			};
-
-			dispatch((dispatch, getState) => {
-				dispatch(setInvestListAction(obj));
-				const investments = getState().investments;
-			
-
-				localStorage.setItem('investmentsList', JSON.stringify(investments));
-			});
-
-
+		const errors = validate(objData, rules);
+		
+		if (Object.keys(errors).length > 0) {
+			setErrors(errors);
 		} else {
-			setError(true);
+			setErrors('');
+			dispatch((dispatch, getState) => {
+				dispatch(addInvestmentAction(objData));
+				const investments = getState().investments;
+				localStorage.setItem('investmentsList', JSON.stringify(investments));
+				dispatch(resetInvestmentInfoAction());
+			});
 		}
 	};
-	function resetFromAfterSubmit() {
-		dispatch(resetInvestmentInfoAction());
-	
-		setIsDatePurchaseValid(false);
-		setIsAmountValid(false);
-		setIsOldPriceIsValid(false);
-		setError(false);
-	}
-	
+
 	const onChangePurchaseDate = (value) => {
 		dispatch(setPurchaseDateAction(value));
 	};
@@ -121,32 +89,33 @@ const CurrencyFormPanel = () => {
 					className='panel__form form'
 					action=''
 				>
-					{error && <p className='form__error'>make sure to fill every field correct, to get better calculations</p>}
+					{errors && <p className='form__error'>make sure to fill every field correct, to get better calculations</p>}
 					<FormSelect
+						error={errors.selectedCode}
 						action={setSelectedCurrencyCodeAction}
 						options={currencyCodes}
 					/>
 					<FormInput
+						error={errors.purchaseDate}
 						type={'text'}
 						label={'Purchase Date:'}
 						placeHolder={'RRRR-MM-DD'}
-						isValid={isDatePurchaseValid}
 						onChange={onChangePurchaseDate}
 						value={purchaseDate}
 					/>
 					<FormInput
+						error={errors.amount}
 						type={'text'}
 						label={'Amount of Currency:'}
-						isValid={isAmountValid}
 						onChange={onChangeAmount}
 						value={amount}
 					/>
 					<FormInput
+						error={errors.oldPrice}
 						type={'text'}
 						label={'Exchange Rate on Purchase Day:'}
 						placeHolder={'automatic filling'}
 						price={oldPrice ? oldPrice : null}
-						isValid={isOldPriceIsValid}
 						value={oldPrice}
 						onChange={onChangeOldPrice}
 					/>

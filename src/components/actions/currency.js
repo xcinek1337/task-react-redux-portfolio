@@ -5,9 +5,8 @@ export const typesAction = {
 	SET_AMOUNT: 'setAmountToState',
 	SET_OLD_PRICE: 'setOldPriceToState',
 	SET_TODAYS_PRICE: 'setTodaysPriceToState',
-	// SET_SUBMIT_OK: 'setSubmitOkToState',
 	RESET_INV_INFO: 'resetInvInfoInState',
-	SET_INVEST_OBJ: 'setInvestObjToState',
+	ADD_INVEST_OBJ: 'setInvestObjToState',
 	GET_LSTORAGE: 'getLocalStorageToState',
 };
 
@@ -63,14 +62,6 @@ export const setTodaysPriceAction = (price) => {
 	};
 };
 
-export const setSubmitOkAction = (response) => {
-	return {
-		type: typesAction.SET_SUBMIT_OK,
-		payload: {
-			response,
-		},
-	};
-};
 export const resetInvestmentInfoAction = () => {
 	return {
 		type: typesAction.RESET_INV_INFO,
@@ -79,9 +70,9 @@ export const resetInvestmentInfoAction = () => {
 		},
 	};
 };
-export const setInvestListAction = (obj) => {
+export const addInvestmentAction = (obj) => {
 	return {
-		type: typesAction.SET_INVEST_OBJ,
+		type: typesAction.ADD_INVEST_OBJ,
 		payload: {
 			obj,
 		},

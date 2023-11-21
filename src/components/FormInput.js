@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const FormInput = ({ label, type, placeHolder, isValid, value, onChange }) => {
+const FormInput = ({ label, type, placeHolder, isValid, value, onChange, error }) => {
 	const [isFocused, setIsFocused] = useState(false);
 
 	const handleFocus = () => {
@@ -21,7 +21,7 @@ const FormInput = ({ label, type, placeHolder, isValid, value, onChange }) => {
 	return (
 		<div className={'form__input-div'}>
 			<label
-				className={'form__label'}
+				className='form__label'
 				htmlFor={label}
 			>
 				{label}
@@ -36,6 +36,7 @@ const FormInput = ({ label, type, placeHolder, isValid, value, onChange }) => {
 				onFocus={handleFocus}
 				onBlur={handleBlur}
 			/>
+			{error && <p className='form__err-input'>{error}</p>}
 		</div>
 	);
 };

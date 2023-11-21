@@ -32,6 +32,11 @@
     text-align: center;
     color: tomato;
   }
+  &__err-input{
+    text-align: center;
+    font-size: 13px;
+    color: tomato;
+  }
   &__input-div {
     display: flex;
     flex-direction: column;
@@ -82,7 +87,4 @@
     outline: 2px solid red;
   }
 
-  &__valid {
-    outline: 2px solid green;
-  }
 }

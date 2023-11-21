@@ -7,7 +7,6 @@ const initialState = {
 		amount: '',
 		oldPrice: '',
 		todaysPrice: '',
-		isSubmitValid: '',
 	},
 	inputsReset: '',
 	investments: [],
@@ -63,14 +62,6 @@ const reducers = (state = initialState, action) => {
 					todaysPrice: action.payload.price,
 				},
 			};
-		case typesAction.SET_SUBMIT_OK:
-			return {
-				...state,
-				investmentInfo: {
-					...state.investmentInfo,
-					isSubmitValid: action.payload.response,
-				},
-			};
 		case typesAction.RESET_INV_INFO:
 			return {
 				...state,
@@ -81,11 +72,10 @@ const reducers = (state = initialState, action) => {
 					amount: '',
 					oldPrice: '',
 					todaysPrice: '',
-					isSubmitValid: '',
 				},
 				inputsReset: action.payload.clear,
 			};
-		case typesAction.SET_INVEST_OBJ:
+		case typesAction.ADD_INVEST_OBJ:
 			return {
 				...state,
 				investments: [...state.investments, action.payload.obj],
