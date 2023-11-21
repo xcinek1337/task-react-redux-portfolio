@@ -5,8 +5,9 @@ export const typesAction = {
 	SET_AMOUNT: 'setAmountToState',
 	SET_OLD_PRICE: 'setOldPriceToState',
 	SET_TODAYS_PRICE: 'setTodaysPriceToState',
-	SET_SUBMIT_OK: 'setSubmitOkToState',
+	// SET_SUBMIT_OK: 'setSubmitOkToState',
 	RESET_INV_INFO: 'resetInvInfoInState',
+	SET_INVEST_OBJ: 'setInvestObjToState',
 };
 
 export const setCurrencyCodesAction = (codes) => {
@@ -74,6 +75,14 @@ export const resetInvestmentInfoAction = () => {
 		type: typesAction.RESET_INV_INFO,
 		payload: {
 			clear: true,
+		},
+	};
+};
+export const setInvestListAction = (obj) => {
+	return {
+		type: typesAction.SET_INVEST_OBJ,
+		payload: {
+			obj,
 		},
 	};
 };

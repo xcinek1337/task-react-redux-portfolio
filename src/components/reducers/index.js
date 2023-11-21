@@ -10,6 +10,7 @@ const initialState = {
 		isSubmitValid: '',
 	},
 	inputsReset: '',
+	investments: [],
 };
 
 const reducers = (state = initialState, action) => {
@@ -21,7 +22,6 @@ const reducers = (state = initialState, action) => {
 					...state.investmentInfo,
 					currencyCodes: action.payload.codes,
 				},
-			
 			};
 		case typesAction.SET_SELECTED_CURR_CODE:
 			return {
@@ -84,6 +84,11 @@ const reducers = (state = initialState, action) => {
 					isSubmitValid: '',
 				},
 				inputsReset: action.payload.clear,
+			};
+		case typesAction.SET_INVEST_OBJ:
+			return {
+				...state,
+				investments: [...state.investments, action.payload.obj],
 			};
 		default:
 			return state;

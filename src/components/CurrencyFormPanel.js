@@ -16,6 +16,7 @@ import {
 	setSubmitOkAction,
 	setSelectedCurrencyCodeAction,
 	resetInvestmentInfoAction,
+	setInvestListAction,
 } from './actions/currency';
 
 import '../style/formPanel.scss';
@@ -37,14 +38,18 @@ const CurrencyFormPanel = () => {
 	//   downloading currency codes to select
 	useEffect(() => {
 		getCurrencyCodesAPI();
+
+		const storedInvestments = JSON.parse(localStorage.getItem('investmentsList')) 
+		dispatch(setInvestListAction(storedInvestments));
 	}, []);
+
+
 
 	useEffect(() => {
 		// listening for data to download price in purchase day and todays price
 		if (purchaseDate && selectedCode && oldPrice === '') {
 			getRates();
 		}
-
 		//setting green border to inputs for correct validation
 		setIsDatePurchaseValid(validatePurchaseDate(purchaseDate, todaysDate));
 		setIsOldPriceIsValid(validateOldPrice(oldPrice));
@@ -55,14 +60,32 @@ const CurrencyFormPanel = () => {
 		e.preventDefault();
 
 		if (isDatePurchaseValid && isAmountValid && isOldPriceIsValid && selectedCode && todaysPrice) {
-			dispatch(setSubmitOkAction(true));
-			setTimeout(() => {
-				// need to get in async stack
-				resetFromAfterSubmit();
-			}, 100);
+			const obj = {
+				selectedCode: selectedCode,
+				purchaseDate: purchaseDate,
+				amount: amount,
+				oldPrice: oldPrice,
+				todaysPrice: todaysPrice,
+			};
+			dispatch(setInvestListAction(obj));
+			// 	dispatch(setSubmitOkAction(true));
+			// 	setTimeout(() => {
+			// 		// need to get in async stack
+			// 		resetFromAfterSubmit();
+			// 	}, 100);
 		} else {
 			setError(true);
 		}
+	};
+
+	const onChangePurchaseDate = (value) => {
+		dispatch(setPurchaseDateAction(value));
+	};
+	const onChangeAmount = (value) => {
+		dispatch(setAmountAction(value));
+	};
+	const onChangeOldPrice = (value) => {
+		dispatch(setOldPriceAction(value));
 	};
 
 	return (
@@ -79,25 +102,28 @@ const CurrencyFormPanel = () => {
 						options={currencyCodes}
 					/>
 					<FormInput
-						action={setPurchaseDateAction}
 						type={'text'}
 						label={'Purchase Date:'}
 						placeHolder={'RRRR-MM-DD'}
 						isValid={isDatePurchaseValid}
+						onChange={onChangePurchaseDate}
+						value={purchaseDate}
 					/>
 					<FormInput
-						action={setAmountAction}
 						type={'text'}
 						label={'Amount of Currency:'}
 						isValid={isAmountValid}
+						onChange={onChangeAmount}
+						value={amount}
 					/>
 					<FormInput
-						action={setOldPriceAction}
 						type={'text'}
 						label={'Exchange Rate on Purchase Day:'}
 						placeHolder={'automatic filling'}
 						price={oldPrice ? oldPrice : null}
 						isValid={isOldPriceIsValid}
+						value={oldPrice}
+						onChange={onChangeOldPrice}
 					/>
 
 					<input
@@ -123,10 +149,9 @@ const CurrencyFormPanel = () => {
 		try {
 			const result = await providePriceAPI(purchaseDate, selectedCurrency);
 			return result;
-			9876;
 		} catch (error) {
 			console.error('cannot provide old price rate', error);
-		} 
+		}
 	}
 	async function getRates() {
 		const oldPrice = await getPriceApi(purchaseDate, selectedCode);
@@ -148,7 +173,7 @@ const CurrencyFormPanel = () => {
 	}
 	function resetFromAfterSubmit() {
 		dispatch(resetInvestmentInfoAction());
-		
+
 		setIsDatePurchaseValid(false);
 		setIsAmountValid(false);
 		setIsOldPriceIsValid(false);

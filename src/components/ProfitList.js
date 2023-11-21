@@ -3,27 +3,27 @@ import { useSelector } from 'react-redux';
 
 import '../style/profitList.scss';
 
-// dodac do reduceraa czyszczenie stanu po submicie
-//
-
-
 const ProfitList = () => {
-	const investmentInfo = useSelector((state) => state.investmentInfo);
-	const { isSubmitValid } = investmentInfo;
+	const investmentsList = useSelector((state) => state.investments);
 
-	const storedInvestments = JSON.parse(localStorage.getItem('investments')) || [];
 	useEffect(() => {
-		if (isSubmitValid) {
-			const newInvestments = [...storedInvestments, investmentInfo];
-			localStorage.setItem('investments', JSON.stringify(newInvestments));
+		const storedInvestments = JSON.parse(localStorage.getItem('investmentsList')) || [];
+
+		const hasChanged = JSON.stringify(investmentsList) !== JSON.stringify(storedInvestments);
+
+		if (hasChanged) {
+			localStorage.setItem('investmentsList', JSON.stringify(investmentsList));
 		}
-	}, [isSubmitValid]);
+	}, [investmentsList]);
 
 	const renderInvest = () => {
-		return storedInvestments.map((invest, index) => {
+		return investmentsList.map((invest, index) => {
+			if (!invest) {
+				return null;
+			}
 			const { selectedCode, purchaseDate, amount, oldPrice, todaysPrice } = invest;
 			const profit = (((amount * todaysPrice - amount * oldPrice) / (amount * oldPrice)) * 100).toFixed(2);
-			
+
 			return (
 				<tr key={index}>
 					<td>{selectedCode}</td>

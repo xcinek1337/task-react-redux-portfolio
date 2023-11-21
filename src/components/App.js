@@ -2,10 +2,10 @@ import React from 'react';
 import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
+import { composeWithDevTools } from 'redux-devtools-extension';
 
 import CurrencyApp from './CurrencyApp';
 
-import { composeWithDevTools } from 'redux-devtools-extension';
 import reducers from './reducers';
 import '../style/background.scss';
 
