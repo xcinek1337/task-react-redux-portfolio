@@ -17,7 +17,7 @@ import {
 	resetInvestmentInfoAction,
 	addInvestmentAction,
 	getLocalStorageDataAction,
-} from './actions/currency';
+} from '../actions/currency';
 
 import '../style/formPanel.scss';
 import todaysDay from '../utilities/todaysDay';
@@ -33,7 +33,7 @@ const CurrencyFormPanel = () => {
 
 	//   downloading currency codes to select or getting data about invest from ls
 	useEffect(() => {
-		// getCurrencyCodesAPI();
+		getCurrencyCodesAPI();
 		const localStorageData = JSON.parse(localStorage.getItem('investmentsList')) || [];
 		dispatch(getLocalStorageDataAction(localStorageData));
 	}, []);
