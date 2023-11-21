@@ -9,6 +9,7 @@ const initialState = {
 		todaysPrice: '',
 		isSubmitValid: '',
 	},
+	inputsReset: '',
 };
 
 const reducers = (state = initialState, action) => {
@@ -20,6 +21,7 @@ const reducers = (state = initialState, action) => {
 					...state.investmentInfo,
 					currencyCodes: action.payload.codes,
 				},
+			
 			};
 		case typesAction.SET_SELECTED_CURR_CODE:
 			return {
@@ -68,6 +70,20 @@ const reducers = (state = initialState, action) => {
 					...state.investmentInfo,
 					isSubmitValid: action.payload.response,
 				},
+			};
+		case typesAction.RESET_INV_INFO:
+			return {
+				...state,
+				investmentInfo: {
+					...state.investmentInfo,
+					selectedCode: '',
+					purchaseDate: '',
+					amount: '',
+					oldPrice: '',
+					todaysPrice: '',
+					isSubmitValid: '',
+				},
+				inputsReset: action.payload.clear,
 			};
 		default:
 			return state;

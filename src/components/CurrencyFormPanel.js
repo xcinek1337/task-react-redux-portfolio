@@ -15,6 +15,7 @@ import {
 	setTodaysPriceAction,
 	setSubmitOkAction,
 	setSelectedCurrencyCodeAction,
+	resetInvestmentInfoAction,
 } from './actions/currency';
 
 import '../style/formPanel.scss';
@@ -55,7 +56,10 @@ const CurrencyFormPanel = () => {
 
 		if (isDatePurchaseValid && isAmountValid && isOldPriceIsValid && selectedCode && todaysPrice) {
 			dispatch(setSubmitOkAction(true));
-			// resetFromAfterSubmit()
+			setTimeout(() => {
+				// need to get in async stack
+				resetFromAfterSubmit();
+			}, 100);
 		} else {
 			setError(true);
 		}
@@ -112,8 +116,6 @@ const CurrencyFormPanel = () => {
 			dispatch(setCurrencyCodesAction(currency));
 		} catch (error) {
 			console.error('Error fetching data:', error);
-		} finally {
-			console.log('xd');
 		}
 	}
 
@@ -124,9 +126,7 @@ const CurrencyFormPanel = () => {
 			9876;
 		} catch (error) {
 			console.error('cannot provide old price rate', error);
-		} finally {
-			console.log(`new price swiezutki`);
-		}
+		} 
 	}
 	async function getRates() {
 		const oldPrice = await getPriceApi(purchaseDate, selectedCode);
@@ -147,8 +147,7 @@ const CurrencyFormPanel = () => {
 		}
 	}
 	function resetFromAfterSubmit() {
-		// to mozna zastapic ACTIONEM ktory bedzie czyscil stan w reduxie, a tu bedzie uztyywy tylko 1 dispatch zamiast kazdego
-		dispatch(setSubmitOkAction(false));
+		dispatch(resetInvestmentInfoAction());
 		
 		setIsDatePurchaseValid(false);
 		setIsAmountValid(false);

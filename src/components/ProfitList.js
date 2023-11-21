@@ -19,20 +19,11 @@ const ProfitList = () => {
 		}
 	}, [isSubmitValid]);
 
-	// const renderInvest = () => (
-	// 	<>
-	// 		<td>{selectedCode}</td>
-	// 		<td>{purchaseDate}</td>
-	// 		<td>{amount}</td>
-	// 		<td>{oldPrice}</td>
-	// 		<td>{todaysPrice}</td>
-	// 		<td>{(amount * todaysPrice).toFixed(2)}</td>
-	// 		<td>{(((amount * todaysPrice - amount * oldPrice) / (amount * oldPrice)) * 100).toFixed(2)}%</td>
-	// 	</>
-	// );
 	const renderInvest = () => {
 		return storedInvestments.map((invest, index) => {
 			const { selectedCode, purchaseDate, amount, oldPrice, todaysPrice } = invest;
+			const profit = (((amount * todaysPrice - amount * oldPrice) / (amount * oldPrice)) * 100).toFixed(2);
+			
 			return (
 				<tr key={index}>
 					<td>{selectedCode}</td>
@@ -41,7 +32,7 @@ const ProfitList = () => {
 					<td>{oldPrice}</td>
 					<td>{todaysPrice}</td>
 					<td>{(amount * todaysPrice).toFixed(2)}</td>
-					<td>{(((amount * todaysPrice - amount * oldPrice) / (amount * oldPrice)) * 100).toFixed(2)}%</td>
+					<td className={profit > 0 ? 'table__profit-td' : 'table__lose-td'}>{profit}%</td>
 				</tr>
 			);
 		});

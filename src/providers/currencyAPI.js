@@ -1,9 +1,9 @@
 import todaysDay from '../utilities/todaysDay';
-
+const API_KEY = '7x0hIV0y2sTUP3TSB47o5gXcuwuQaYd9';
 export const allCurrenciesAPI = async (data = '2023-11-20') => {
 	try {
 		const response = await fetch(
-			`https://api.apilayer.com/fixer/${data}?symbols=&base=EUR&apikey=B8HfEJcZl5MRlqkzQZ3Vl6v6v039c87h`
+			`https://api.apilayer.com/fixer/${data}?symbols=&base=EUR&apikey=7x0hIV0y2sTUP3TSB47o5gXcuwuQaYd9`
 		);
 
 		if (!response.ok) {
@@ -24,7 +24,7 @@ export const allCurrenciesAPI = async (data = '2023-11-20') => {
 export const providePriceAPI = async (data, symbol) => {
 	try {
 		const response = await fetch(
-			`https://api.apilayer.com/fixer/${data}?symbols=PLN&base=${symbol}&apikey=B8HfEJcZl5MRlqkzQZ3Vl6v6v039c87h`
+			`https://api.apilayer.com/fixer/${data}?symbols=PLN&base=${symbol}&apikey=7x0hIV0y2sTUP3TSB47o5gXcuwuQaYd9`
 		);
 		if (!response.ok) {
 			// if (response.status === 401) {
@@ -36,9 +36,9 @@ export const providePriceAPI = async (data, symbol) => {
 		}
 		const result = await response.json();
 		const totalPrice = result.rates.PLN;
-    	return totalPrice;
+		return totalPrice;
 	} catch (e) {
 		// throwing error e to fetching function
 		throw new Error(e);
-	} 
+	}
 };
