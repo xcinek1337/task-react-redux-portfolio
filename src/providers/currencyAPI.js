@@ -1,6 +1,6 @@
 import todaysDay from '../utilities/todaysDay';
 const API_KEY = '7x0hIV0y2sTUP3TSB47o5gXcuwuQaYd9';
-export const allCurrenciesAPI = async (data = '2023-11-20') => {
+export const allCurrenciesAPI = async (data = todaysDay()) => {
 	try {
 		const response = await fetch(
 			`https://api.apilayer.com/fixer/${data}?symbols=&base=EUR&apikey=7x0hIV0y2sTUP3TSB47o5gXcuwuQaYd9`

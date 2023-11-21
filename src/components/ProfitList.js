@@ -1,41 +1,33 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
-
 import '../style/profitList.scss';
 
 const ProfitList = () => {
 	const investmentsList = useSelector((state) => state.investments);
 
-	useEffect(() => {
-		const storedInvestments = JSON.parse(localStorage.getItem('investmentsList')) || [];
-
-		const hasChanged = JSON.stringify(investmentsList) !== JSON.stringify(storedInvestments);
-
-		if (hasChanged) {
-			localStorage.setItem('investmentsList', JSON.stringify(investmentsList));
-		}
-	}, [investmentsList]);
-
 	const renderInvest = () => {
-		return investmentsList.map((invest, index) => {
-			if (!invest) {
-				return null;
-			}
-			const { selectedCode, purchaseDate, amount, oldPrice, todaysPrice } = invest;
-			const profit = (((amount * todaysPrice - amount * oldPrice) / (amount * oldPrice)) * 100).toFixed(2);
+		return investmentsList.length > 0 ? (
+			investmentsList.map((invest, index) => {
+				const { selectedCode, purchaseDate, amount, oldPrice, todaysPrice } = invest;
+				const profit = (((amount * todaysPrice - amount * oldPrice) / (amount * oldPrice)) * 100).toFixed(2);
 
-			return (
-				<tr key={index}>
-					<td>{selectedCode}</td>
-					<td>{purchaseDate}</td>
-					<td>{amount}</td>
-					<td>{oldPrice}</td>
-					<td>{todaysPrice}</td>
-					<td>{(amount * todaysPrice).toFixed(2)}</td>
-					<td className={profit > 0 ? 'table__profit-td' : 'table__lose-td'}>{profit}%</td>
-				</tr>
-			);
-		});
+				return (
+					<tr key={index}>
+						<td>{selectedCode}</td>
+						<td>{purchaseDate}</td>
+						<td>{amount}</td>
+						<td>{oldPrice}</td>
+						<td>{todaysPrice}</td>
+						<td>{(amount * todaysPrice).toFixed(2)}</td>
+						<td className={profit > 0 ? 'table__profit-td' : 'table__lose-td'}>{profit}%</td>
+					</tr>
+				);
+			})
+		) : (
+			<tr>
+				<td colSpan='7'>No investments available.</td>
+			</tr>
+		);
 	};
 
 	return (

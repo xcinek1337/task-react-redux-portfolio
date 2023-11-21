@@ -30,6 +30,7 @@ const CurrencyFormPanel = () => {
 	const [isAmountValid, setIsAmountValid] = useState(false);
 	const [isOldPriceIsValid, setIsOldPriceIsValid] = useState(false);
 
+	const investmentsList = useSelector((state) => state.investments);
 	const investmentInfo = useSelector((state) => state.investmentInfo);
 	const { currencyCodes, selectedCode, purchaseDate, amount, oldPrice, todaysPrice } = investmentInfo;
 
@@ -39,11 +40,9 @@ const CurrencyFormPanel = () => {
 	useEffect(() => {
 		getCurrencyCodesAPI();
 
-		const storedInvestments = JSON.parse(localStorage.getItem('investmentsList')) 
-		dispatch(setInvestListAction(storedInvestments));
+		const storedInvestments = JSON.parse(localStorage.getItem('investmentsList'));
+		storedInvestments ? dispatch(setInvestListAction(storedInvestments)) : null;
 	}, []);
-
-
 
 	useEffect(() => {
 		// listening for data to download price in purchase day and todays price
@@ -67,12 +66,13 @@ const CurrencyFormPanel = () => {
 				oldPrice: oldPrice,
 				todaysPrice: todaysPrice,
 			};
-			dispatch(setInvestListAction(obj));
-			// 	dispatch(setSubmitOkAction(true));
-			// 	setTimeout(() => {
-			// 		// need to get in async stack
-			// 		resetFromAfterSubmit();
-			// 	}, 100);
+
+			dispatch((dispatch, getState) => {
+				dispatch(setInvestListAction(obj));
+				const aktualnyStan = getState().investments;
+				const jsonStan = JSON.stringify(aktualnyStan);
+				localStorage.setItem('investmentsList', jsonStan);
+			});
 		} else {
 			setError(true);
 		}
