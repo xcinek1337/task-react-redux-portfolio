@@ -22,7 +22,7 @@ const ProfitList = () => {
 	const readyProfitLoss = profitLoss.reduce((curr, acc) => {
 		return curr + parseFloat(acc);
 	}, 0);
-	console.log(readyProfitLoss);
+	
 	const renderInvest = () => {
 		return investmentsList && investmentsList.length > 0
 			? investmentsList.map((invest, index) => {
