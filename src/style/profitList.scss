@@ -1,6 +1,6 @@
 .profit__wrapper {
 	margin: 0 auto;
-	max-width: 1400px;
+	max-width: 1200px;
 	width: 100%;
 }
 .table {
@@ -14,6 +14,9 @@
 		border: 1px solid white;
 		padding: 8px;
 		text-align: left;
+	}
+	tfoot{
+		color:goldenrod
 	}
 	&__profit-td {
 		background-color: rgba(40, 201, 40, 0.563);

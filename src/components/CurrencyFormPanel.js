@@ -33,7 +33,7 @@ const CurrencyFormPanel = () => {
 
 	//   downloading currency codes to select or getting data about invest from ls
 	useEffect(() => {
-		getCurrencyCodesAPI();
+		// getCurrencyCodesAPI();
 		const localStorageData = JSON.parse(localStorage.getItem('investmentsList')) || [];
 		dispatch(getLocalStorageDataAction(localStorageData));
 	}, []);
