@@ -1,9 +1,9 @@
 import todaysDay from '../utilities/todaysDay';
-const API_KEY = '7x0hIV0y2sTUP3TSB47o5gXcuwuQaYd9';
+const API_KEY = 'VpeY2T0KIkKpSiYEDB8eCmRo73Mnyyls';
 export const allCurrenciesAPI = async (data = todaysDay()) => {
 	try {
 		const response = await fetch(
-			`https://api.apilayer.com/fixer/${data}?symbols=&base=EUR&apikey=7x0hIV0y2sTUP3TSB47o5gXcuwuQaYd9`
+			`https://api.apilayer.com/fixer/${data}?symbols=&base=EUR&apikey=${API_KEY}`
 		);
 
 		if (!response.ok) {
@@ -24,7 +24,7 @@ export const allCurrenciesAPI = async (data = todaysDay()) => {
 export const providePriceAPI = async (data, symbol) => {
 	try {
 		const response = await fetch(
-			`https://api.apilayer.com/fixer/${data}?symbols=PLN&base=${symbol}&apikey=7x0hIV0y2sTUP3TSB47o5gXcuwuQaYd9`
+			`https://api.apilayer.com/fixer/${data}?symbols=PLN&base=${symbol}&apikey=${API_KEY}`
 		);
 		if (!response.ok) {
 			// if (response.status === 401) {
