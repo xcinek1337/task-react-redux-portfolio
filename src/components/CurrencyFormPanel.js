@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import DynamicFormManager from './DynamicFormManager';
 
-
 import todaysDay from '../utilities/todaysDay';
 import { validate, rules } from '../utilities/validateInputs';
 import { allCurrenciesAPI, providePriceAPI } from '../providers/currencyAPI';
