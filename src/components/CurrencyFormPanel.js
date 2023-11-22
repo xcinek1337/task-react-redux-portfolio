@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import DynamicFormManager from './DynamicFormManager';
@@ -17,6 +17,7 @@ import {
 	resetInvestmentInfoAction,
 	addInvestmentAction,
 	setLocalStorageDataAction,
+	setErrorsAction,
 } from '../actions/currency';
 
 import '../style/formPanel.scss';
@@ -25,14 +26,13 @@ const CurrencyFormPanel = () => {
 	const dispatch = useDispatch();
 	const todaysDate = todaysDay();
 
-	const [errors, setErrors] = useState(false);
-
+	const errors = useSelector((state) => state.errors);
 	const investmentInfo = useSelector((state) => state.investmentInfo);
 	const { currencyCodes, selectedCode, purchaseDate, amount, oldPrice, todaysPrice } = investmentInfo;
 
 	//   downloading currency codes to select or getting data about invest from ls
 	useEffect(() => {
-		// getCurrencyCodesAPI();
+		getCurrencyCodesAPI();
 		const localStorageData = JSON.parse(localStorage.getItem('investmentsList')) || [];
 		dispatch(setLocalStorageDataAction(localStorageData));
 	}, []);
@@ -58,10 +58,10 @@ const CurrencyFormPanel = () => {
 		const errors = validate(objData, rules);
 
 		if (Object.keys(errors).length > 0) {
-			setErrors(errors);
+			dispatch(setErrorsAction(errors));
 		} else {
-			setErrors('');
 			dispatch((dispatch, getState) => {
+				dispatch(setErrorsAction(errors));
 				dispatch(addInvestmentAction(objData));
 				const investments = getState().investments;
 				localStorage.setItem('investmentsList', JSON.stringify(investments));
@@ -76,7 +76,6 @@ const CurrencyFormPanel = () => {
 		{ name: 'Amount of Currency:', input: 'input', type: 'text', placeHolder: 'RRRR-MM-DD', dispatcAction: setAmountAction, value: amount, error: errors.amount },
 		{ name: 'Exchange Rate on Purchase Day:', input: 'input', type: 'text', placeHolder: 'RRRR-MM-DD', dispatcAction: setOldPriceAction, value: oldPrice, error: errors.oldPrice },
 	  ];
-
 	return (
 		<div className='panel'>
 			<div className='panel__wrapper'>
@@ -84,7 +83,9 @@ const CurrencyFormPanel = () => {
 					onSubmit={handleSubmit}
 					className='panel__form form'
 				>
-					{errors && <p className='form__error'>make sure to fill every field correct, to get better calculations</p>}
+					{Object.keys(errors).length > 0 && (
+						<p className='form__error'>Make sure to fill every field correctly to get better calculations</p>
+					)}
 					<DynamicFormManager formFields={formFields} />
 					<input
 						className='form__submit'
@@ -95,7 +96,7 @@ const CurrencyFormPanel = () => {
 			</div>
 		</div>
 	);
-	
+
 	//   fetching funcs on the bottom for better clear view code
 	async function getCurrencyCodesAPI() {
 		try {

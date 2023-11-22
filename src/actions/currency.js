@@ -8,6 +8,7 @@ export const typesAction = {
 	RESET_INV_INFO: 'resetInvInfoInState',
 	ADD_INVEST_OBJ: 'setInvestObjToState',
 	SET_LSTORAGE: 'setLocalStorageToState',
+	SET_ERRORS: 'setErrorsToState',
 };
 
 export const setCurrencyCodesAction = (codes) => {
@@ -83,6 +84,14 @@ export const setLocalStorageDataAction = (array) => {
 		type: typesAction.SET_LSTORAGE,
 		payload: {
 			array,
+		},
+	};
+};
+export const setErrorsAction = (errorsObj) => {
+	return {
+		type: typesAction.SET_ERRORS,
+		payload: {
+			errorsObj,
 		},
 	};
 };

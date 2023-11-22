@@ -3,10 +3,9 @@ import { useDispatch } from 'react-redux';
 
 const DynamicFormManager = ({ formFields }) => {
 	const dispatch = useDispatch();
-	console.log(formFields);
+
 	const renderFields = formFields.map((field, index) => {
 		const action = field.dispatcAction;
-
 		return (
 			<div
 				className={'form__input-div'}

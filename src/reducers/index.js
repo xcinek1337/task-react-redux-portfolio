@@ -9,6 +9,7 @@ const initialState = {
 		todaysPrice: '',
 	},
 	inputsReset: '',
+	errors: {},
 	investments: [],
 };
 
@@ -84,6 +85,11 @@ const reducers = (state = initialState, action) => {
 			return {
 				...state,
 				investments: action.payload.array,
+			};
+		case typesAction.SET_ERRORS:
+			return {
+				...state,
+				errors: action.payload.errorsObj,
 			};
 		default:
 			return state;
