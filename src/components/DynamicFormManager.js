@@ -22,7 +22,7 @@ const DynamicFormManager = ({ formFields }) => {
 							disabled
 							hidden
 						>
-							Currency
+							{field.name}
 						</option>
 						{field.currencyCodes.map((code, index) => {
 							return (

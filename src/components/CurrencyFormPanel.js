@@ -37,9 +37,11 @@ const CurrencyFormPanel = () => {
 		dispatch(setLocalStorageDataAction(localStorageData));
 	}, []);
 
+	// listening for data to download price in purchase day and todays price
 	useEffect(() => {
-		// listening for data to download price in purchase day and todays price
-		if (purchaseDate && selectedCode && oldPrice === '') {
+		// fetch data only when the purchase date is valid, to avoid unnecessary API requests on every onChange event
+		const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+		if (dateRegex.test(purchaseDate) && selectedCode && oldPrice === '') {
 			getRates();
 		}
 	}, [selectedCode, purchaseDate, oldPrice, amount]);
@@ -58,6 +60,7 @@ const CurrencyFormPanel = () => {
 		const errors = validate(objData, rules);
 
 		if (Object.keys(errors).length > 0) {
+			console.log(errors);
 			dispatch(setErrorsAction(errors));
 		} else {
 			dispatch((dispatch, getState) => {
@@ -71,11 +74,12 @@ const CurrencyFormPanel = () => {
 	};
 
 	const formFields = [
-		{ name: 'Currency:', input: 'select', type: 'text', placeHolder: 'RRRR-MM-DD', dispatcAction: setSelectedCurrencyCodeAction, value: selectedCode, error: errors.selectedCode, currencyCodes: currencyCodes },
+		{ name: 'Currency', input: 'select', type: 'text', placeHolder: 'RRRR-MM-DD', dispatcAction: setSelectedCurrencyCodeAction, value: selectedCode, error: errors.selectedCode, currencyCodes: currencyCodes },
 		{ name: 'Purchase Date:', input: 'input', type: 'text', placeHolder: 'RRRR-MM-DD', dispatcAction: setPurchaseDateAction, value: purchaseDate, error: errors.purchaseDate },
 		{ name: 'Amount of Currency:', input: 'input', type: 'text', placeHolder: 'RRRR-MM-DD', dispatcAction: setAmountAction, value: amount, error: errors.amount },
 		{ name: 'Exchange Rate on Purchase Day:', input: 'input', type: 'text', placeHolder: 'RRRR-MM-DD', dispatcAction: setOldPriceAction, value: oldPrice, error: errors.oldPrice },
 	  ];
+	  
 	return (
 		<div className='panel'>
 			<div className='panel__wrapper'>
@@ -84,7 +88,7 @@ const CurrencyFormPanel = () => {
 					className='panel__form form'
 				>
 					{Object.keys(errors).length > 0 && (
-						<p className='form__error'>Make sure to fill every field correctly to get better calculations</p>
+						<p className='form__error'>Make sure to fill in every field correctly to receive accurate calculations, or wait while we download the latest exchange rate data.</p>
 					)}
 					<DynamicFormManager formFields={formFields} />
 					<input

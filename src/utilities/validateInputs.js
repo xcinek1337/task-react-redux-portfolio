@@ -18,6 +18,7 @@ export const rules = [
 	{ name: 'amount', validate: validateAmount, message: 'amount is required' },
 	{ name: 'oldPrice', validate: validateOldPrice, message: 'exchange rate is required' },
 	{ name: 'selectedCode', validate: validateSelect, message: 'currency is required' },
+	{ name: 'todaysPrice', validate: validateAmount, message: 'error' },
 ];
 
 export const validate = (dataObj, rules) => {
