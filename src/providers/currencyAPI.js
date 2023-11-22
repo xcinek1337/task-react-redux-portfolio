@@ -1,5 +1,5 @@
 import todaysDay from '../utilities/todaysDay';
-const API_KEY = 'VpeY2T0KIkKpSiYEDB8eCmRo73Mnyyls';
+const API_KEY = 'csZKSIeqyikckQ8xTTzz9XSdfiwnEQvc';
 export const allCurrenciesAPI = async (data = todaysDay()) => {
 	try {
 		const response = await fetch(
