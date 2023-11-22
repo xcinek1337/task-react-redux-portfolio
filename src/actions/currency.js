@@ -7,7 +7,7 @@ export const typesAction = {
 	SET_TODAYS_PRICE: 'setTodaysPriceToState',
 	RESET_INV_INFO: 'resetInvInfoInState',
 	ADD_INVEST_OBJ: 'setInvestObjToState',
-	GET_LSTORAGE: 'getLocalStorageToState',
+	SET_LSTORAGE: 'setLocalStorageToState',
 };
 
 export const setCurrencyCodesAction = (codes) => {
@@ -78,9 +78,9 @@ export const addInvestmentAction = (obj) => {
 		},
 	};
 };
-export const getLocalStorageDataAction = (array) => {
+export const setLocalStorageDataAction = (array) => {
 	return {
-		type: typesAction.GET_LSTORAGE,
+		type: typesAction.SET_LSTORAGE,
 		payload: {
 			array,
 		},
