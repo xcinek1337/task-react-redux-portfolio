@@ -1,47 +1,54 @@
-> ⭐ ***README** to coś więcej niż opis. Poprzez nie **pokazujesz swoje mocne strony** – swoją dokładność, sposób myślenia i podejście do rozwiązywania problemów. Niech Twoje README pokaże, że masz **świetne predyspozycje do rozwoju!***
-> 
-> 🎁 *Zacznij od razu. Skorzystaj z **[szablonu README i wskazówek](https://github.com/devmentor-pl/readme-template)**.* 
+[![My Skills](https://skillicons.dev/icons?i=redux,react)](https://skillicons.dev)
+# ProfitCurrency. io
+![redux-enhancement](https://github.com/xcinek1337/task-react-redux-portfolio/assets/125750465/cd888f1b-3217-47e3-b2f6-bb265e9e06b8)
 
-&nbsp;
-
-
-# Portfel walutowy
-
-Zbuduj aplikację, która będzie obliczać potencjalny zysk lub stratę z posiadanych walut.
-
-Użytkownik ma mieć możliwość wprowadzenia poniższych informacji:
-- rodzaj posiadanej waluty
-- jej ilość
-- data zakupu
-- cena zakupu (ten element można zautomatyzować – kiedy zostanie wybrana data, to cena uzupełni się automatycznie przy pomocy API. Oczywiście użytkownik będzie mógł tę cenę zmodyfikować). 
-
-Zapisuj te informacje w [localStorage](https://frontstack.pl/czym-jest-local-storage-i-jak-uzywac/) jako tablicę przechowującą obiekty. Po uruchomieniu strony zawsze sprawdzaj, czy w LS są już przechowywane jakieś dane. Jeśli tak, wczytuj je do widoku aplikacji.
-
-Następnie przy pomocy [API](https://exchangeratesapi.io/) pobieraj aktualne kursy walut użytkownika i przypisuj odpowiednią wartość do każdego elementu w tablicy.
-
-> **Uwaga:** w tym projekcie możesz napotkać ostrzeżenia lub błędy związane z *mixed content*, ponieważ darmowa wersja exchangeratesapi.io oferuje jedynie niezabezpieczone połączenie (HTTP). Mixed content występuje, gdy żądanie nie jest zabezpieczone przez protokół HTTPS (czego wymaga polityka bezpieczeństwa przeglądarek), czyli ładowana jest zawartość HTTP, np. grafiki, skrypty, style itp. Aby umożliwić ładowanie zawartości HTTP, należy [zmienić ustawienia przeglądarki](https://stackoverflow.com/questions/18321032/how-to-get-chrome-to-allow-mixed-content) dla danej strony. Innym wyjściem jest zakupienie płatnej wersji exchangeratesapi.io albo skorzystanie z innego API (jeśli takie znajdziesz, to będę wdzięczny za informację! ;)).
-
-&nbsp;
-
-Wynik działania aplikacji mógłby się sprowadzać do poniższej tabeli:
-
-| Waluta | Ilość | Data zakupu | Cena zakupu | Obecny kurs | Obecna wartość | Zysk/Strata |
-| --- | --- | --- | --- | --- | --- | --- |
-| EUR | 100 | 2020-01-01 | 4.38 | 4.49 | 449.00 | 11.00 (+2.5%) |
-| EUR | 100 | 2020-03-01 | 4.48 | 4.49 | 449.00 |  1.00 (+0.2%) |
-| USD | 100 | 2020-03-01 | 3.91 | 3.71 | 371.00 |  -20.00 (-5.2%) |
-
-Stanem zarządzaj przy pomocy Reduxa, wykorzystując oddzielny Magazyn dla danych z localStorage ([przykład](https://dev.to/link2twenty/react-redux-and-localstorage-2lih)) oraz dla API. Całość połącz przy pomocy `.combineReducers()`.
-
-Stwórz projekt tak, aby każdy z elementów w łatwy sposób można było przenieść do innej aplikacji.
+ProfitCurrency.io is a web application designed to calculate profits or losses on currency investments. The application features an integrated API that automatically fetches currency prices based on the purchase date and selected currency. It utilizes Redux for state management, enabling efficient access to state across nested components. Additionally, the application includes a table summarizing investment details for easy reference.
 
 
-PS Jeśli uznasz, że Twoja aplikacja powinna być bardziej rozbudowana, możesz przechowywać historię sprawdzeń danej waluty w localStorage i [generować wykres](https://github.com/jerairrest/react-chartjs-2) prezentujący poziom zysków lub strat dla danej pozycji.
+## Features 
 
+- Calculate profit or loss on currency investments
+- Investment summary table for quick overview
+- Automatic price retrieval using an integrated API
+- Manage state using Redux
+- Persist state to `localStorage` for data retention across sessions
 
+## Technologies Used
 
-&nbsp;
+- React
+- React
+- RESTful API integration for fetching real-time currency prices 
 
-> ⭐ ***README** to coś więcej niż opis. Poprzez nie **pokazujesz swoje mocne strony** – swoją dokładność, sposób myślenia i podejście do rozwiązywania problemów. Niech Twoje README pokaże, że masz **świetne predyspozycje do rozwoju!***
-> 
-> 🎁 *Zacznij od razu. Skorzystaj z **[szablonu README i wskazówek](https://github.com/devmentor-pl/readme-template)**.* 
+## What I Learned
+
+- Proficiency in managing application state with Redux. 
+- Familiarity with API integration. I gained experience in developing CRUD operations to interact with APIs.
+- Skill in data persistence using localStorage.
+- Ability to implement API data according to provider documentation.
+
+## Acknowledgements
+
+This project was developed as part of the mentoring program at [DevMentor.pl](https://devmentor.pl). I would like to thank my mentor for their invaluable guidance and feedback during the development of this project. Their insights helped me improve my code quality and deepen my understanding of React.
+
+## Getting Started
+
+To view the project locally, follow these steps:
+
+1. Clone the repository:
+    ```sh
+    git clone https://github.com/xcinek1337/task-react-redux.git
+    ```
+2. Navigate to the project directory:
+    ```sh
+    cd task-react-redux
+    ```
+3. Install dependencies:
+    ```sh
+    npm install
+    ```
+4. Start the development server:
+    ```sh
+    npm run start
+    ```
+
+The project should now be running on `http://localhost:8080`.
